@@ -1,6 +1,7 @@
 package lesson5;
 
 import java.io.*;
+import java.util.*;
 
 public class Main {
 
@@ -12,23 +13,57 @@ public class Main {
         AppData appData = new AppData(header, data);
         System.out.println("До: " + appData);
 
-        //сериализация
-        // запись в файл в байтовом представлении
         //файл создастся автоматически
-        try (OutputStream out = new BufferedOutputStream(new FileOutputStream("table.csv"));
-             ObjectOutputStream objOut = new ObjectOutputStream(out)) {
-            objOut.writeObject(appData);
+        //сохранение данных в csv файл
+        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("table.csv")))) {
+            for (int i = 0; i < appData.getHeader().length; i++) {
+                writer.print(appData.getHeader()[i] + ";");
+            }
+            writer.println();
+            for (int i = 0; i < appData.getData().length; i++) {
+                for (int j = 0; j < appData.getData()[i].length; j++) {
+                    writer.print(appData.getData()[i][j] + ";");
+                }
+                writer.println();
+            }
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
 
-        //десиариализация
-        try (FileInputStream fileInput = new FileInputStream("table.csv");
-             ObjectInputStream objIn = new ObjectInputStream(fileInput)) {
-            AppData appDataIn = (AppData) objIn.readObject();
-            System.out.println("После: " + appDataIn);
-        } catch (Exception e) {
+        //вывести данные в консоль и выполнить десириализацию
+        ArrayList listHeader = new ArrayList<>();
+        Scanner file = null;
+        try {
+            file = new Scanner(new File("table.csv")); //вызываем сканер для чтения файла
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        listHeader.add(file.nextLine().split(";"));
+
+        String[] outputHeader = new String[0];
+        for (int i = 0; i < listHeader.size(); i++) {
+            outputHeader = (String[]) listHeader.get(i);
+        }
+
+        List<String> listData = new ArrayList<>();
+
+        while (file.hasNext())
+            listData.add(file.nextLine()); //считываем оставшиеся строки
+
+        int[][] outputData = new int[listData.size()][];
+
+        for (int i = 0; i < listData.size(); i++) {
+            String currentString = listData.get(i);
+            String[] split = currentString.split(";");
+            outputData[i] = new int[split.length];
+            for (int j = 0; j < split.length; j++) {
+                outputData[i][j] = Integer.parseInt(split[j]);
+            }
+        }
+
+        AppData appData1 = new AppData(outputHeader, outputData);
+        System.out.println("После: " + appData1);
+
     }
 }

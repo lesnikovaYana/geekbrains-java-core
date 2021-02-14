@@ -12,6 +12,14 @@ public class AppData implements Serializable {
         this.data = data;
     }
 
+    public String[] getHeader() {
+        return header;
+    }
+
+    public int[][] getData() {
+        return data;
+    }
+
     @Override
     public String toString() {
         return "AppData{" +
