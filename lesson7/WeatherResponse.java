@@ -1,5 +1,6 @@
 package lesson7;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,8 +17,14 @@ public class WeatherResponse implements Serializable {
     @JsonProperty(value = "Day")
     private String weatherText;
 
-    public WeatherResponse() { //пустой конструктор обязателен для десериализации
+    public WeatherResponse() {
 
+    }
+
+    public WeatherResponse(String date, String temperature, String weatherText) {
+        this.date = date;
+        this.temperature = temperature;
+        this.weatherText = weatherText;
     }
 
     public String getDate() {
