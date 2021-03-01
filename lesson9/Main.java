@@ -36,22 +36,21 @@ public class Main {
         ));
 
         System.out.println();
-        Main main = new Main();
-        main.uniqueCourses(studentList).forEach(System.out::println);
+        uniqueCourses(studentList).forEach(System.out::println);
         System.out.println();
 
         System.out.println();
-        main.theMostActive(studentList).forEach(System.out::println);
+        theMostActive(studentList).forEach(System.out::println);
         System.out.println();
 
         System.out.println();
         Courses course = new Courses("Курсы Рисования");
-        main.onOneCourse(studentList, course).forEach(System.out::println);
+        onOneCourse(studentList, course).forEach(System.out::println);
         System.out.println();
 
     }
 
-    public List<Course> uniqueCourses(List<Student> studentList) {
+    public static List<Course> uniqueCourses(List<Student> studentList) {
         return studentList.stream()
                 .map(Student::getAllCourses)
                 .flatMap(List::stream)
@@ -59,14 +58,14 @@ public class Main {
                 .collect(Collectors.toList());
     }
 
-    public List<Student> theMostActive(List<Student> studentList) {
+    public static List<Student> theMostActive(List<Student> studentList) {
         return studentList.stream()
                 .sorted((a1, a2) -> a2.getAllCourses().size() - a1.getAllCourses().size())
                 .limit(3)
                 .collect(Collectors.toList());
     }
 
-    public List<Student> onOneCourse(List<Student> studentList, Courses course) {
+    public static List<Student> onOneCourse(List<Student> studentList, Courses course) {
         return studentList.stream()
                 .filter(a -> a.getAllCourses().contains(course))
                 .collect(Collectors.toList());
